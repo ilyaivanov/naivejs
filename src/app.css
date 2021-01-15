@@ -1,12 +1,9 @@
-.my-button {
-  font-size: 35px;
-  border: none;
-  outline: none;
-  background-color: darkgray;
-  border-radius: 4px;
-  padding: 0.5em;
-  transition: transform 200ms ease-out;
+body {
+  margin: 0;
+  font-family: "Roboto", "Source Sans Pro", "Trebuchet MS", "Lucida Grande",
+  "Bitstream Vera Sans", "Helvetica Neue", sans-serif;
+  color: white;
 }
-.my-button:active{
-  transform: translate3d(0, 20px, 0);
+* {
+  box-sizing: border-box;
 }
