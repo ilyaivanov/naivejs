@@ -1,26 +1,11 @@
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import controller, { sidebarView } from "./app";
-
-const renderHtml = () =>
-  (document.body.innerHTML = `
-      <div class="page">
-        <div class="page__sidebar"></div>
-        <div class="page__body"></div>
-      </div>
-
-
-      <template id="sidebar-row">
-        <div class="sidebar-row">
-
-        </div>
-      </template>
-  `);
+import { loadHtmlBodyIntoDocument } from "./testing/loadHtml";
 
 describe("app", () => {
-  beforeEach(function () {
-    renderHtml();
-  });
+  beforeEach(loadHtmlBodyIntoDocument);
+
   it("should be", function () {
     controller.init();
     const musicRow = sidebarView.findRowForItem("music");
