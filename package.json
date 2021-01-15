@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "webpack serve --mode development --watch",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "yarn build && firebase-deploy.sh"
   },
   "repository": {
     "type": "git",

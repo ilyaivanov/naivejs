@@ -1,3 +1,8 @@
-import {greet} from './foo'
+let counter = 0;
+var button = document.getElementById("button");
 
-console.log(greet('Roland'));
+button.addEventListener('click', () => {
+  counter += 2;
+  button.textContent = counter;
+})
+

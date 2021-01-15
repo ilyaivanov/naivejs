@@ -11,7 +11,9 @@ module.exports = (env, argv) => {
       filename: isProd ? "[chunkhash].js" : "main.js",
     },
     plugins: [
-      new HtmlWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template:'public/index.html'
+      }),
       isProd ? new CleanWebpackPlugin() : undefined,
     ].filter(x => x),
   };
