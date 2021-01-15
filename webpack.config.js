@@ -6,26 +6,34 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = (env, argv) => {
   const isProd = argv.mode === "production";
   return {
-    entry: "./src/app.js",
+    entry: "./src/app.ts",
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "[chunkhash].js",
     },
+    devtool: isProd ? undefined : "inline-source-map",
     module: {
       rules: [
         {
           test: /\.css$/,
           use: [MiniCssExtractPlugin.loader, "css-loader"],
         },
-        { test: /\.ts$/, use: "ts-loader" },
+        {
+          test: /\.ts?$/,
+          use: "ts-loader",
+          exclude: /node_modules/,
+        },
       ],
+    },
+    resolve: {
+      extensions: [".tsx", ".ts", ".js"],
     },
     plugins: [
       new HtmlWebpackPlugin({
         template: "public/index.html",
       }),
       new MiniCssExtractPlugin({
-        filename:"[chunkhash].css"
+        filename: "[chunkhash].css",
       }),
       isProd ? new CleanWebpackPlugin() : undefined,
     ].filter((x) => x),
