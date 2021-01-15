@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
     entry: "./src/app.ts",
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "[chunkhash].js",
+      filename: "app.[chunkhash].js",
     },
     devtool: isProd ? undefined : "inline-source-map",
     module: {
@@ -33,7 +33,7 @@ module.exports = (env, argv) => {
         template: "public/index.html",
       }),
       new MiniCssExtractPlugin({
-        filename: "[chunkhash].css",
+        filename: "styles.[chunkhash].css",
       }),
       isProd ? new CleanWebpackPlugin() : undefined,
     ].filter((x) => x),
