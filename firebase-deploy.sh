@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Removing all files from ../slapstuk-staging/dist"
+rm -r ../slapstuk-staging/dist
 echo "Copying files to ../slapstuk-staging folder..."
 cp -r ./dist  ../slapstuk-staging
 echo "Running 'firebase deploy --only hosting' from ../slapstuk-staging folder..."
