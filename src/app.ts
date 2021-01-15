@@ -1,6 +1,7 @@
 import "./bem/page.css";
 import "./bem/sidebarRow.css";
 import "./app.css";
+import * as ids from "./bem";
 
 interface Item {
   id: string;
@@ -47,29 +48,25 @@ export const sidebarView = {
 
     if (row) {
       row.innerHTML = item.title;
-      row.id = "row-" + item.id;
+      row.id = ids.sidebar.rowId(item.id);
       row.addEventListener("click", () => controller.selectItem(item));
     }
     return row;
   },
 
   selectItem(itemId: string) {
-    this.findRowForItem(itemId).classList.add("sidebar-row--selected");
+    this.findRowForItem(itemId).classList.add(ids.sidebar.rowSelected);
   },
   unSelectItem(itemId: string) {
-    this.findRowForItem(itemId).classList.remove("sidebar-row--selected");
+    this.findRowForItem(itemId).classList.remove(ids.sidebar.rowSelected);
   },
 
   findRowForItem(itemId: string): HTMLElement {
-    return document.getElementById("row-" + itemId) as HTMLElement;
+    return document.getElementById(ids.sidebar.rowId(itemId)) as HTMLElement;
   },
 
   getRowFromATemplate(): HTMLElement {
-    const template = document.getElementById(
-      "sidebar-row"
-    ) as HTMLTemplateElement;
-    const itemNode = template.content.cloneNode(true) as HTMLElement;
-    return itemNode.querySelector(".sidebar-row") as HTMLElement;
+    return createDiv(ids.sidebar.row);
   },
 };
 
@@ -79,5 +76,13 @@ const pageView = {
     if (body) body.innerHTML = item.title;
   },
 };
+
+const createDiv = (className?: string): HTMLElement => {
+  const div = document.createElement("div");
+  if (className) div.classList.add(ids.sidebar.row);
+  return div;
+};
+
+
 
 export default controller;
