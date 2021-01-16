@@ -1,12 +1,6 @@
-import {
-  cls,
-  div,
-  cssClass,
-  css,
-  findById,
-  ids,
-  findFirstByClass,
-} from "./infra";
+import { cls, cssClass, css, ids } from "./infra";
+import * as dom from "./infra/dom";
+
 import controller from "./app";
 
 const horizontalPadding = 4;
@@ -24,21 +18,20 @@ css(`.${cls.row}.${cls.rowSelected}`, {
 });
 
 export const renderRows = (rows: HTMLElement[]) => {
-  const sidebar = findFirstByClass(cls.pageSidebar);
-  const fragment = document.createDocumentFragment();
-  rows.forEach((v) => fragment.appendChild(v));
-  sidebar.append(fragment);
+  dom.findFirstByClass(cls.pageSidebar).append(dom.fragment(rows));
 };
 
 export const renderRow = (item: Item, level: number) => {
-  const row = getRowFromATemplate();
+  const row = dom.div({
+    className: cls.row,
+    id: ids.sidebarRow(item.id),
+    style: {
+      paddingLeft: 20 * level + horizontalPadding + "px",
+    },
+    children: item.title,
+  });
 
-  if (row) {
-    row.innerHTML = item.title;
-    row.id = ids.sidebarRow(item.id);
-    row.style.paddingLeft = 20 * level + horizontalPadding + "px";
-    row.addEventListener("click", () => controller.selectItem(item));
-  }
+  row.addEventListener("click", () => controller.selectItem(item));
   return row;
 };
 
@@ -51,11 +44,5 @@ export const unSelectItem = (itemId: string) => {
 };
 
 export const findRowForItem = (itemId: string): HTMLElement => {
-  return findById(ids.sidebarRow(itemId));
-};
-
-export const getRowFromATemplate = (): HTMLElement => {
-  return div({
-    className: cls.row,
-  });
+  return dom.findById(ids.sidebarRow(itemId));
 };

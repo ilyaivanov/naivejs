@@ -20,7 +20,10 @@
   },
   "homepage": "https://github.com/ilyaivanov/naivejs#readme",
   "jest": {
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/testing/setup.ts"
+    ]
   },
   "devDependencies": {
     "@testing-library/dom": "^7.29.4",

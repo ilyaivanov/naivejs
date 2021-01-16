@@ -1,4 +1,5 @@
-import { cls, div, cssClass, findFirstByClass } from "./infra";
+import { cls, cssClass } from "./infra";
+import * as dom from "./infra/dom";
 
 cssClass(cls.galleryHeader, {
   fontSize: "60px",
@@ -11,9 +12,8 @@ cssClass(cls.galleryHeader, {
 
 export const galleryView = {
   renderSelectedItem: (title: string) => {
-    const body = findFirstByClass(cls.pageBody);
-    const elem = div({ className: cls.galleryHeader });
-    elem.innerHTML = title;
-    if (body) body.innerHTML = elem.outerHTML;
+    const body = dom.findFirstByClass(cls.pageBody);
+    const elem = dom.div({ className: cls.galleryHeader, children: title });
+    body.innerHTML = elem.outerHTML;
   },
 };

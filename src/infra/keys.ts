@@ -1,10 +1,3 @@
-const sidebar = {
-  row: "sidebar-row",
-  rowSelected: "sidebar-row--selected",
-  rowTemplateId: "sidebar-row",
-  rowId: (itemId: string) => "row-" + itemId,
-};
-
 export const ids = {
   sidebarRow: (itemId: string) => "row-" + itemId,
 } as const;
@@ -19,5 +12,3 @@ export const cls = {
 } as const;
 
 export type ClassName = valueof<typeof cls>;
-
-export type Id = valueof<typeof ids>;
