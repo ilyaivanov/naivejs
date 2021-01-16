@@ -20,18 +20,7 @@
   },
   "homepage": "https://github.com/ilyaivanov/naivejs#readme",
   "jest": {
-    "preset": "ts-jest",
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "html"
-    ],
-    "transform": {
-      "^.+\\.html?$": "html-loader-jest"
-    },
-    "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/src/testing/styleMock.js"
-    }
+    "preset": "ts-jest"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.29.4",

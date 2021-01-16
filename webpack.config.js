@@ -1,7 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = (env, argv) => {
   const isProd = argv.mode === "production";
@@ -14,10 +14,10 @@ module.exports = (env, argv) => {
     devtool: isProd ? undefined : "inline-source-map",
     module: {
       rules: [
-        {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, "css-loader"],
-        },
+        // {
+        //   test: /\.css$/,
+        //   use: [MiniCssExtractPlugin.loader, "css-loader"],
+        // },
         {
           test: /\.ts?$/,
           use: "ts-loader",
@@ -32,9 +32,9 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: "public/index.html",
       }),
-      new MiniCssExtractPlugin({
-        filename: "styles.[chunkhash].css",
-      }),
+      // new MiniCssExtractPlugin({
+      //   filename: "styles.[chunkhash].css",
+      // }),
       isProd ? new CleanWebpackPlugin() : undefined,
     ].filter((x) => x),
   };

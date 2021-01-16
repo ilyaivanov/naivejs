@@ -1,88 +1,60 @@
-import "./bem/page.css";
-import "./bem/sidebarRow.css";
-import "./app.css";
-import * as ids from "./bem";
+import { galleryView } from "./gallery";
+import * as sidebar  from "./sidebar";
+import * as page from "./page";
 
-interface Item {
-  id: string;
-  title: string;
-}
-export const sidebarItems: Item[] = [
-  { id: "music", title: "Music" },
-  { id: "dev", title: "Development" },
-  { id: "3", title: "Learning" },
-  { id: "4", title: "On Quality" },
-];
+export const sidebarItems: Items = {
+  home: { id: "home", title: "HOME", children: ["music", "dev"] },
+  music: { id: "music", title: "Music", children: [] },
+  dev: { id: "dev", title: "Development", children: ["3", "4"] },
+  "3": { id: "3", title: "Learning", children: [] },
+  "4": { id: "4", title: "On Quality", children: [] },
+};
 
-var selectedItemId = sidebarItems[0].id;
+var selectedItemId = "music";
 
 const controller = {
   init: () => {
-    sidebarView.render(sidebarItems);
-    const selectedItem = sidebarItems.find(
-      (i) => i.id == selectedItemId
-    ) as Item;
-    pageView.renderSelectedItem(selectedItem);
-    sidebarView.selectItem(selectedItemId);
+    page.renderPageLayout();
+    const rows = traverseTree(sidebarItems, "home", (item, level) =>
+      sidebar.renderRow(item, level)
+    );
+    sidebar.renderRows(rows);
+
+    const selectedItem = sidebarItems[selectedItemId];
+    galleryView.renderSelectedItem(selectedItem.title);
+    sidebar.selectItem(selectedItemId);
   },
+
   selectItem: (item: Item) => {
-    sidebarView.unSelectItem(selectedItemId);
-    sidebarView.selectItem(item.id);
-    selectedItemId = item.id;
-    pageView.renderSelectedItem(item);
-  },
-};
-
-export const sidebarView = {
-  render(items: Item[]) {
-    const sidebar = document.querySelector(".page__sidebar") as HTMLElement;
-    const fragment = document.createDocumentFragment();
-    items
-      .map((item) => this.renderRow(item))
-      .forEach((view) => fragment.appendChild(view));
-    sidebar.append(fragment);
-  },
-
-  renderRow(item: Item) {
-    const row = this.getRowFromATemplate();
-
-    if (row) {
-      row.innerHTML = item.title;
-      row.id = ids.sidebar.rowId(item.id);
-      row.addEventListener("click", () => controller.selectItem(item));
+    if (item.id != selectedItemId) {
+      sidebar.unSelectItem(selectedItemId);
+      sidebar.selectItem(item.id);
+      selectedItemId = item.id;
+      galleryView.renderSelectedItem(item.title);
     }
-    return row;
-  },
-
-  selectItem(itemId: string) {
-    this.findRowForItem(itemId).classList.add(ids.sidebar.rowSelected);
-  },
-  unSelectItem(itemId: string) {
-    this.findRowForItem(itemId).classList.remove(ids.sidebar.rowSelected);
-  },
-
-  findRowForItem(itemId: string): HTMLElement {
-    return document.getElementById(ids.sidebar.rowId(itemId)) as HTMLElement;
-  },
-
-  getRowFromATemplate(): HTMLElement {
-    return createDiv(ids.sidebar.row);
   },
 };
 
-const pageView = {
-  renderSelectedItem: (item: Item) => {
-    const body = document.querySelector(".page__body");
-    if (body) body.innerHTML = item.title;
-  },
+//Utils
+const traverseTree = <T>(
+  items: Items,
+  rootKey: string,
+  mapper: (item: Item, level: number) => T,
+  filter: (item: Item, level: number) => boolean = () => true
+): T[] => {
+  const mapItem = (key: string, level: number): any => {
+    if (filter(items[key], level) && items[key].children.length > 0)
+      return [
+        mapper(items[key], level),
+        ...items[key].children.map((i) => mapItem(i, level + 1)),
+      ];
+    else return mapper(items[key], level);
+  };
+  if (items[rootKey])
+    return items[rootKey].children
+      .map((i) => mapItem(i, 0))
+      .flat(Number.MAX_VALUE);
+  else return [];
 };
-
-const createDiv = (className?: string): HTMLElement => {
-  const div = document.createElement("div");
-  if (className) div.classList.add(ids.sidebar.row);
-  return div;
-};
-
-
 
 export default controller;
