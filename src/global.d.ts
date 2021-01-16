@@ -7,3 +7,6 @@ interface Item {
 type Items = {
   [key: string]: Item;
 };
+
+type valueof<T> = T[keyof T];
+

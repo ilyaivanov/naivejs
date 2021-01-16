@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import controller from "../app";
-import { cls, sidebar } from "../infra";
+import { cls, findFirstByClass } from "../infra";
 import * as sidebarView from "../sidebar";
 
-describe("app", () => {
+describe("Having a sidebar in an app", () => {
   afterEach(() => {
     document.body.innerHTML = "";
   });
@@ -13,8 +13,8 @@ describe("app", () => {
     controller.init();
     const musicRow = sidebarView.findRowForItem("music");
     userEvent.click(musicRow);
-    expect(document.getElementsByClassName(sidebar.row)).toHaveLength(4);
-    expect(musicRow).toHaveClass(sidebar.rowSelected);
+    expect(document.getElementsByClassName(cls.row)).toHaveLength(7);
+    expect(musicRow).toHaveClass(cls.rowSelected);
     expect(musicRow).toHaveTextContent("Music");
   });
 
@@ -22,16 +22,15 @@ describe("app", () => {
     controller.init();
     userEvent.click(sidebarView.findRowForItem("dev"));
     expect(sidebarView.findRowForItem("music")).not.toHaveClass(
-      sidebar.rowSelected
+      cls.rowSelected
     );
-    expect(sidebarView.findRowForItem("dev")).toHaveClass(sidebar.rowSelected);
+    expect(sidebarView.findRowForItem("dev")).toHaveClass(cls.rowSelected);
 
     expect(sidebarView.findRowForItem("3")).toHaveStyle("padding-left: 24px");
   });
 
   it("Selected should have some styles", function () {
     controller.init();
-    const item = document.getElementsByClassName(cls.selectedItem)[0];
-    expect(item).toHaveStyle("font-size: 60px");
+    expect(findFirstByClass(cls.galleryHeader)).toHaveStyle("font-size: 60px");
   });
 });

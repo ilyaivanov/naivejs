@@ -1,13 +1,17 @@
 import { galleryView } from "./gallery";
-import * as sidebar  from "./sidebar";
+import * as sidebar from "./sidebar";
 import * as page from "./page";
+import { traverseItems } from "./infra/items";
 
 export const sidebarItems: Items = {
   home: { id: "home", title: "HOME", children: ["music", "dev"] },
   music: { id: "music", title: "Music", children: [] },
   dev: { id: "dev", title: "Development", children: ["3", "4"] },
-  "3": { id: "3", title: "Learning", children: [] },
+  "3": { id: "3", title: "Learning", children: ["piano", "elm", "typescript"] },
   "4": { id: "4", title: "On Quality", children: [] },
+  piano: { id: "piano", title: "Piano", children: [] },
+  elm: { id: "elm", title: "Elm", children: [] },
+  typescript: { id: "typescript", title: "TypeScript", children: [] },
 };
 
 var selectedItemId = "music";
@@ -15,7 +19,7 @@ var selectedItemId = "music";
 const controller = {
   init: () => {
     page.renderPageLayout();
-    const rows = traverseTree(sidebarItems, "home", (item, level) =>
+    const rows = traverseItems(sidebarItems, "home", (item, level) =>
       sidebar.renderRow(item, level)
     );
     sidebar.renderRows(rows);
@@ -33,28 +37,6 @@ const controller = {
       galleryView.renderSelectedItem(item.title);
     }
   },
-};
-
-//Utils
-const traverseTree = <T>(
-  items: Items,
-  rootKey: string,
-  mapper: (item: Item, level: number) => T,
-  filter: (item: Item, level: number) => boolean = () => true
-): T[] => {
-  const mapItem = (key: string, level: number): any => {
-    if (filter(items[key], level) && items[key].children.length > 0)
-      return [
-        mapper(items[key], level),
-        ...items[key].children.map((i) => mapItem(i, level + 1)),
-      ];
-    else return mapper(items[key], level);
-  };
-  if (items[rootKey])
-    return items[rootKey].children
-      .map((i) => mapItem(i, 0))
-      .flat(Number.MAX_VALUE);
-  else return [];
 };
 
 export default controller;

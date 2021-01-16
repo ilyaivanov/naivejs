@@ -1,4 +1,4 @@
-import { ClassName } from "./keys";
+import { ClassName, Id } from "./keys";
 
 interface DivDefinition {
   id?: string;
@@ -30,5 +30,18 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
 
   if (divDefinition.id) elem.id = divDefinition.id;
 
+  return elem;
+};
+
+export const findFirstByClass = (className: ClassName): HTMLElement => {
+  const elem = document.getElementsByClassName(className);
+  if (elem.length === 0)
+    throw new Error(`Couldn't find any element with a class ${className}`);
+  return elem.item(0) as HTMLElement;
+};
+
+export const findById = (id: string): HTMLElement => {
+  const elem = document.getElementById(id);
+  if (!elem) throw new Error(`Couldn't find any element with a id ${id}`);
   return elem;
 };

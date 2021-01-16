@@ -22,8 +22,8 @@ export const renderPageLayout = () => {
   const root = document.body;
   root.appendChild(
     div({
-      className: "page",
-      children: [{ className: "page__sidebar" }, { className: "page__body" }],
+      className: cls.page,
+      children: [{ className: cls.pageSidebar }, { className: cls.pageBody }],
     })
   );
 };

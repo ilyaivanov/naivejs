@@ -1,3 +1,3 @@
-export { cls, sidebar } from "./keys";
+export { cls, ids } from "./keys";
 export { cssClass, css } from "./style";
-export { div } from "./dom";
+export { div, findFirstByClass, findById } from "./dom";
