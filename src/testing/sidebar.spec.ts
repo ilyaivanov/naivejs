@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event";
-import controller from "../app";
+import controller from "../controller";
 import { cls } from "../infra";
 import * as dom from "../infra/dom";
 import * as sidebarView from "../sidebar";

@@ -1,4 +1,4 @@
-import controller from "../app";
+import controller from "../controller";
 import {cls, findFirstByClass} from "../infra";
 import * as gallery from "../gallery";
 

@@ -1,14 +1,17 @@
 import { ClassName } from "./keys";
 
-interface DivDefinition {
+export interface DivDefinition {
   id?: string;
   className?: ClassName | ClassName[];
   children?: DivDefinition | DivDefinition[] | string;
   style?: Partial<CSSStyleDeclaration>;
+
+  type?: "button" | "div";
+  onClick?: (e: Event) => void;
 }
 
 export const div = (divDefinition: DivDefinition): HTMLElement => {
-  const elem = document.createElement("div");
+  const elem = document.createElement(divDefinition.type || "div");
   const { className } = divDefinition;
   if (className) {
     if (typeof className == "string") {
@@ -33,6 +36,8 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
 
   if (divDefinition.id) elem.id = divDefinition.id;
   if (divDefinition.style) Object.assign(elem.style, divDefinition.style);
+  if (divDefinition.onClick)
+    elem.addEventListener("click", divDefinition.onClick);
 
   return elem;
 };
@@ -51,13 +56,19 @@ export const findAllByClass = (className: ClassName): Element[] => {
   return Array.from(elem);
 };
 
-export const findById = (id: string): HTMLElement => {
+export const findById = (id: string): Element => {
   const elem = document.getElementById(id);
   if (!elem) throw new Error(`Couldn't find any element with a id ${id}`);
   return elem;
 };
+export const query = (selector: string): Element => {
+  const elem = document.querySelector(selector);
+  if (!elem)
+    throw new Error(`Couldn't find any element with a selector ${selector}`);
+  return elem;
+};
 
-export const fragment = (nodes: HTMLElement[]) => {
+export const fragment = (nodes: Element[]) => {
   const fragment = document.createDocumentFragment();
   nodes.forEach((node) => fragment.appendChild(node));
   return fragment;

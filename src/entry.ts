@@ -1,4 +1,4 @@
-import controller from "./app";
+import controller from "./controller";
 import { css } from "./infra";
 
 css("body", {

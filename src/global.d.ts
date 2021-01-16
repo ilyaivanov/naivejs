@@ -2,6 +2,7 @@ interface Item {
   id: string;
   title: string;
   children: string[];
+  isOpenFromSidebar?: boolean;
 }
 
 type Items = {
@@ -9,4 +10,3 @@ type Items = {
 };
 
 type valueof<T> = T[keyof T];
-
