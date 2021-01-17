@@ -2,22 +2,33 @@ import { ClassName } from "./keys";
 
 export interface DivDefinition {
   id?: string;
-  className?: ClassName | ClassName[];
+  className?: ClassName | (ClassName | undefined)[];
   children?: DivDefinition | DivDefinition[] | string;
   style?: Partial<CSSStyleDeclaration>;
 
-  type?: "button" | "div";
+  attributes?: {};
+
+  type?: "button" | "div" | "svg" | "path";
   onClick?: (e: Event) => void;
 }
 
 export const div = (divDefinition: DivDefinition): HTMLElement => {
-  const elem = document.createElement(divDefinition.type || "div");
+  const type = divDefinition.type || "div";
+  var elem: HTMLElement;
+  if (type == "svg" || type == "path")
+    elem = (document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      type
+    ) as unknown) as HTMLElement;
+  else elem = document.createElement(type);
   const { className } = divDefinition;
   if (className) {
     if (typeof className == "string") {
       elem.classList.add(className);
     } else {
-      className.forEach((clas) => elem.classList.add(clas));
+      className.forEach((clas) => {
+        if (clas !== undefined) elem.classList.add(clas);
+      });
     }
   }
 
@@ -39,7 +50,15 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
   if (divDefinition.onClick)
     elem.addEventListener("click", divDefinition.onClick);
 
-  return elem;
+  const { attributes } = divDefinition;
+  if (attributes) {
+    Object.keys(attributes).map((key) => {
+      if (!!(attributes as any)[key])
+        elem.setAttribute(key, (attributes as any)[key] + "");
+    });
+  }
+
+  return elem as HTMLElement;
 };
 
 export const findFirstByClass = (className: ClassName): HTMLElement => {

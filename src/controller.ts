@@ -3,7 +3,9 @@ import * as sidebar from "./sidebar";
 import * as page from "./page";
 import * as dom from "./infra/dom";
 
-export const sidebarItems: Items = {
+export let sidebarItems: Items = {};
+
+const initialState = (): Items => ({
   home: { id: "home", title: "HOME", children: ["music", "dev"] },
   music: { id: "music", title: "Music", children: [] },
   dev: {
@@ -17,12 +19,13 @@ export const sidebarItems: Items = {
   piano: { id: "piano", title: "Piano", children: [] },
   elm: { id: "elm", title: "Elm", children: [] },
   typescript: { id: "typescript", title: "TypeScript", children: [] },
-};
-
-var selectedItemId = "music";
+});
+var selectedItemId = "";
 
 const controller = {
   init: () => {
+    selectedItemId = "music";
+    sidebarItems = initialState();
     page.renderPageLayout();
 
     const homeItems = sidebarItems.home.children.map((id) => sidebarItems[id]);
@@ -43,7 +46,11 @@ const controller = {
       const homeItems = sidebarItems[item.id].children.map(
         (id) => sidebarItems[id]
       );
-      const rows = sidebar.renderRowChildren1(sidebarItems, homeItems, itemLevel + 1);
+      const rows = sidebar.renderRowChildren1(
+        sidebarItems,
+        homeItems,
+        itemLevel + 1
+      );
       sidebar.renderChildren(rows, item.id);
     } else {
       sidebar.removeChildren(item.id);

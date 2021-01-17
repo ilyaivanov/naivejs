@@ -1,4 +1,5 @@
 import { cls, div, cssClass } from "./infra";
+import * as dom from "./infra/dom";
 
 cssClass(cls.page, {
   height: "100vh",
@@ -19,7 +20,7 @@ cssClass(cls.pageSidebar, {
 });
 
 export const renderPageLayout = () => {
-  const root = document.body;
+  const root = dom.findById("root");
   root.appendChild(
     div({
       className: cls.page,

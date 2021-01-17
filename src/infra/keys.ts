@@ -7,6 +7,8 @@ export const cls = {
   galleryHeader: "gallery-header",
   row: "sidebar-row",
   rowToggleButton: "sidebar-row__toggler",
+  rowToggleButtonOpen: "sidebar-row__toggler--open",
+  rowToggleButtonInactive: "sidebar-row__toggler--inactive",
   rowSelected: "sidebar-row--selected",
   page: "page",
   pageSidebar: "page__sidebar",
