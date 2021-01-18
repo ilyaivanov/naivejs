@@ -1,16 +1,19 @@
 import { ClassName } from "./keys";
 
-export interface DivDefinition {
+export type DivDefinition = {
   id?: string;
   className?: ClassName | (ClassName | undefined)[];
   children?: DivDefinition | DivDefinition[] | string;
   style?: Partial<CSSStyleDeclaration>;
 
-  attributes?: {};
+  attributes?: any;
+  on?: {
+    [key in string]: (e: MouseEvent) => void;
+  };
 
-  type?: "button" | "div" | "svg" | "path";
+  type?: "button" | "div" | "svg" | "path" | "img";
   onClick?: (e: Event) => void;
-}
+};
 
 export const div = (divDefinition: DivDefinition): HTMLElement => {
   const type = divDefinition.type || "div";
@@ -53,29 +56,38 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
   const { attributes } = divDefinition;
   if (attributes) {
     Object.keys(attributes).map((key) => {
-      if (!!(attributes as any)[key])
-        elem.setAttribute(key, (attributes as any)[key] + "");
+      if (!!attributes[key]) elem.setAttribute(key, attributes[key] + "");
+    });
+  }
+
+  const { on } = divDefinition;
+  if (on) {
+    Object.keys(on).map((key) => {
+      if (!!on[key]) elem.addEventListener(key, on[key] as any);
     });
   }
 
   return elem as HTMLElement;
 };
 
-export const findFirstByClass = (className: ClassName): HTMLElement => {
-  const elem = document.getElementsByClassName(className);
+export const findFirstByClass = (
+  className: ClassName,
+  container: any = document
+): HTMLElement => {
+  const elem = container.getElementsByClassName(className);
   if (elem.length === 0)
     throw new Error(`Couldn't find any element with a class ${className}`);
   return elem.item(0) as HTMLElement;
 };
 
-export const findAllByClass = (className: ClassName): Element[] => {
+export const findAllByClass = (className: ClassName): HTMLElement[] => {
   const elem = document.getElementsByClassName(className);
   if (elem.length === 0)
     throw new Error(`Couldn't find any element with a class ${className}`);
-  return Array.from(elem);
+  return Array.from(elem) as HTMLElement[];
 };
 
-export const findById = (id: string): Element => {
+export const findById = (id: string): HTMLElement => {
   const elem = document.getElementById(id);
   if (!elem) throw new Error(`Couldn't find any element with a id ${id}`);
   return elem;

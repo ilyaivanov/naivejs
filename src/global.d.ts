@@ -10,3 +10,15 @@ type Items = {
 };
 
 type valueof<T> = T[keyof T];
+
+type Point = {
+  x: number;
+  y: number;
+};
+
+
+type CardItem = {
+  image: string;
+  text: string;
+  isOpen?: boolean;
+};

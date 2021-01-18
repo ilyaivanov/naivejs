@@ -13,6 +13,19 @@ export const cls = {
   page: "page",
   pageSidebar: "page__sidebar",
   pageBody: "page__body",
+
+  container: "container",
+  box: "box",
+  boxText: "box-text",
+
+  gallery: "gallery",
+  galleryWithoutDrag: "gallery-without-drag",
+  galleryDuringDrag: "gallery-during-drag",
+  galleryRightGap: "gallery-right-gap",
+  card: "card",
+  cardDuringDrag: "card-during-drag",
+  cardText: "card-text",
+  cardImage: "card-image",
 } as const;
 
 export type ClassName = valueof<typeof cls>;
