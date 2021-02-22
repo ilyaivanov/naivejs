@@ -11,8 +11,11 @@ export const cssClass = (
   s.innerHTML += text;
   return text;
 };
-export const css = (selector: string | string[], styles: Partial<CSSStyleDeclaration>) => {
-  const res = Array.isArray(selector) ? selector.join(', ') : selector;
+export const css = (
+  selector: string | string[],
+  styles: Partial<CSSStyleDeclaration>
+) => {
+  const res = Array.isArray(selector) ? selector.join(", ") : selector;
   const text = cssToString(res, styles);
   s.innerHTML += text;
   return text;
@@ -25,7 +28,7 @@ const cssToString = (selector: string, props: Partial<CSSStyleDeclaration>) => {
 
 export const cssText = (text: string) => {
   s.innerHTML += text;
-}
+};
 
 const formatStyle = (selector: string, body: string) =>
   `${selector}{
@@ -39,4 +42,9 @@ export const styles = {
     justifyContent: "center",
     alignItems: "center",
   },
+  absoluteTopRight: (top: number, right: number) => ({
+    position: "absolute",
+    top: top + "px",
+    right: right + "px",
+  }),
 };

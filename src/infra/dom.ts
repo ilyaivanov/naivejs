@@ -30,7 +30,7 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
       elem.classList.add(className);
     } else {
       className.forEach((clas) => {
-        if (clas !== undefined) elem.classList.add(clas);
+        if (!!clas) elem.classList.add(clas);
       });
     }
   }
@@ -72,18 +72,37 @@ export const div = (divDefinition: DivDefinition): HTMLElement => {
 
 export const findFirstByClass = (
   className: ClassName,
-  container: any = document
+  container: HTMLElement = document.body
 ): HTMLElement => {
   const elem = container.getElementsByClassName(className);
-  if (elem.length === 0)
+  if (elem.length === 0) {
+    if (process.env.NODE_ENV == "test") {
+      console.log(container.outerHTML);
+    }
     throw new Error(`Couldn't find any element with a class ${className}`);
+  }
   return elem.item(0) as HTMLElement;
 };
 
-export const findAllByClass = (className: ClassName): HTMLElement[] => {
-  const elem = document.getElementsByClassName(className);
-  if (elem.length === 0)
+export const maybeFindFirstByClass = (
+  className: ClassName,
+  container: HTMLElement = document.body
+): Element | null => {
+  const elem = container.getElementsByClassName(className);
+  return elem.item(0);
+};
+
+export const findAllByClass = (
+  className: ClassName,
+  container: HTMLElement = document.body
+): HTMLElement[] => {
+  const elem = container.getElementsByClassName(className);
+  if (elem.length === 0) {
+    if (process.env.NODE_ENV == "test") {
+      console.log(container.outerHTML);
+    }
     throw new Error(`Couldn't find any element with a class ${className}`);
+  }
   return Array.from(elem) as HTMLElement[];
 };
 
